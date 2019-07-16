@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<program>
+  <progname name="GROMACS">
+    <file>
+      .gro
+    </file>
+    <file>
+      .mdp
+    </file>
+    <file>
+      .tpr
+    </file>
+    <file>
+      .xtc
+    </file>
+    <file>
+      .top
+    </file>
+  </progname>
+</program>

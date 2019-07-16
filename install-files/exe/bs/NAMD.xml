@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<program>
+  <progname name="NAMD">
+    <file>
+      .pdb
+    </file>
+    <file>
+      .psf
+    </file>
+    <file>
+      .inp
+    </file>
+    <file>
+      .dcd
+    </file>
+  </progname>
+</program>

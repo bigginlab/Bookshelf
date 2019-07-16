@@ -1,0 +1,64 @@
+<!--
+Copyright (C) 2010 University of Oxford. All rights reserved.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<?php>
+	ob_start();
+?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Bookshelf: a database for biomolecular simulation</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body>
+<!-- start of header -->
+<div id="header">
+	<h1>Bookshelf</h1>
+	<p> A database for Biomolecular Simulation</p>
+	<!-- start #menu -->
+		<div id="menu">
+			<ul>
+				<li><a href="home.php">Home</a></li>
+				<li><a href="search.php">Search</a></li>
+				<li><a href="browse.php">Browse</a></li>
+				<li><a href="help_index.php">Help</a></li>
+				<li><a href="statistics.php">Statistics</a></li>
+				<lf><?php if((isset($_COOKIE['userId']))&&(!strpos($_SERVER['PHP_SELF'],'logout.php'))){ echo"<b>You are now logged in as {$_COOKIE['emailId']} || <u><a href='logout.php'>Logout</a></u></b></p></lf></br>";}
+					 else{ 
+						echo"<lf><b><u><a href='login.php'>Login</a></u></b> ||<b> <u><a href='register.php'>Register</a></u></b></lf></br>";}?>
+				<?php
+					require_once('mysql_connect.php');// connection to the mysql database
+					$db="BookShelf";
+					mysqli_select_db($link,$db);
+					$query= "Select TrajId from TrajData";
+					$results= @mysqli_query($link,$query); //run the query
+					$numrows= @mysqli_num_rows($results);
+					$my_t=getdate();
+					echo '<lf> ('.$my_t[weekday].', '.$my_t[month].' '.$my_t[mday].','. $my_t[year].', <b> '.$numrows.' entries</b> )</lf>';
+				?>
+				</ul>
+		</div>
+	<!-- end #menu -->
+</div>
+<!-- end of header-->
+<!-- start page -->
+	<div id="page">
+		<div id="page-bgtop">
+			<div id="page-bgbtm">
+			<!-- start content -->
+				<div id="content">
