@@ -359,7 +359,7 @@ if [ $(id -u) -eq 0 ]; then
 	done
 
 	if [ "$flag" == "false" ];then
-		echo "Username for Bookshelf administartor - $username"
+		echo "Username for Bookshelf administrator - $username"
 		read -s -p "Enter password : " bspass
 	
 		unset -v i new_uid idvar # get unique id numbers (uid, gid) that are greater than 500
@@ -379,7 +379,8 @@ if [ $(id -u) -eq 0 ]; then
 		dscl . -create /Users/$username
 		dscl . -append /Users/$username NFSHomeDirectory /Users/$username
         	dscl . -create /Users/$username UniqueID $new_uid
-        	dscl . -create /Users/$username UserShell /bin/bash
+         	dscl . -create /Users/$username PrimaryGroupID 20 #this is staff group	
+		dscl . -create /Users/$username UserShell /bin/bash
         	dscl . -create /Users/$username RealName $username
         	dscl . -append /Users/$username RecordName $username
         	dscl . -passwd /Users/$username $bspass
