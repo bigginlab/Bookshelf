@@ -190,7 +190,7 @@ if [ $(id -u) -eq 0 ]; then
          	FilePathName VARCHAR(100) NOT NULL,
          	UserName VARCHAR(40) NOT NULL,
 			Date VARCHAR(40) NOT NULL,
-			Foreign Key(TrajId) references test(TrajId));
+			Foreign Key(TrajId) references TrajData(TrajId));
 
 	SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ANSI';
 	USE bookshelf;
