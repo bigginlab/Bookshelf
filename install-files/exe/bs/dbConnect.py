@@ -18,22 +18,18 @@ Copyright (C) 2010 University of Oxford. All rights reserved.
     refactore by Philip Biggin 2020
 
 """
-try:
-    import pymysql
-    pymysql.install_as_MySQLdb()
-except ImportError:
-    pass
 
-import MySQLdb
+
+import pymysql
 import sys
 
 
 def _dbConnect_():
     try:
-        conn = MySQLdb.connect(host="localhost",
+        conn = pymysql.connect(host="localhost",
                                user="BS.reader",
                                db="bookshelf")
-    except MySQLdb.Error as e:
+    except pymysql.Error as e:
         sys.stderr.write("\nError %d: %s" % (e.args[0], e.args[1]))
         sys.exit(1)
     return conn

@@ -19,14 +19,10 @@ Copyright (C) 2010 University of Oxford. All rights reserved.
 
 """
 
-try:
-    import pymysql
-    pymysql.install_as_MySQLdb()
-except ImportError:
-    pass
+
 
 import formatText
-import MySQLdb
+import pymysql
 import optparse
 import sys
 from dbConnect import _dbConnect_
@@ -91,7 +87,7 @@ if __name__ == "__main__":
             try:
                 cursor.execute("Select TrajId, UserName, DATE_FORMAT(Date,'%d/%m/%y')as Date,\
                                 ProteinName, ProgramCode, UserComments, PmfOption, Doi, Pid from TrajData")
-            except (MySQLdb.ProgrammingError, MySQLdb.OperationalError) as error:
+            except (pymysql.ProgrammingError, pymysql.OperationalError) as error:
                 print(("Error browsing the database. Error %d: %s" % (error.args[0], error.args[1])))
                 sys.exit(1)
             rows = cursor.fetchall()
@@ -103,7 +99,7 @@ if __name__ == "__main__":
                                 where ProteinName like '%" + searchOption + "%' OR UserName \
                                 like '%" + searchOption + "%'OR ProgramCode like '%" + searchOption + "%' OR \
                                 UserComments like '%" + searchOption + "%'OR TrajId like '%" + searchOption + "%'")
-            except (MySQLdb.ProgrammingError, MySQLdb.OperationalError) as error:
+            except (pymysql.ProgrammingError, pymysql.OperationalError) as error:
                 print(("Error browsing the database. Error %d: %s" % (error.args[0], error.args[1])))
                 sys.exit(1)
             rows = cursor.fetchall()
@@ -117,7 +113,7 @@ if __name__ == "__main__":
             try:
                 cursor.execute("Select TrajId, UserName, DATE_FORMAT(Date,'%d/%m/%y')as Date,\
                                 ProteinName, ProgramCode, UserComments, PmfOption, Doi, Pid from TrajData")
-            except (MySQLdb.ProgrammingError, MySQLdb.OperationalError) as error:
+            except (pymysql.ProgrammingError, pymysql.OperationalError) as error:
                 print(("Error browsing the database. Error %d: %s" % (error.args[0], error.args[1])))
                 sys.exit(1)
             rows = cursor.fetchall()
@@ -133,7 +129,7 @@ if __name__ == "__main__":
                                     where ProteinName like '%" + items + "%' OR UserName \
                                     like '%" + items + "%'OR ProgramCode like '%" + items + "%' OR \
                                     UserComments like '%" + items + "%'OR TrajId like '%" + items + "%'")
-                except (MySQLdb.ProgrammingError, MySQLdb.OperationalError) as error:
+                except (pymysql.ProgrammingError, pymysql.OperationalError) as error:
                     print(("Error browsing the database. Error %d: %s" % (error.args[0], error.args[1])))
                     sys.exit(1)
                 rows = cursor.fetchall()

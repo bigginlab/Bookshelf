@@ -18,13 +18,9 @@ Copyright (C) 2010 University of Oxford. All rights reserved.
     updated and refactored December 2020 by Philip Biggin
 
 """
-try:
-    import pymysql
-    pymysql.install_as_MySQLdb()
-except ImportError:
-    pass
 
-import MySQLdb
+
+import pymysql
 import shutil
 import hashlib
 import os
@@ -202,7 +198,7 @@ def _daemon_process_():  # Daemon that copies the folder form temp folder to the
                             'INSERT INTO TrajData VALUES("%s","%s","%s","%s","%s","%s","%s","%s","%s")'
                             % (trajId, userName, systemDate, molName, progName, userComments, pmfFlag, doi, pid)
                         )
-                    except (MySQLdb.ProgrammingError, MySQLdb.OperationalError) as error:
+                    except (pymysql.ProgrammingError, pymysql.OperationalError) as error:
                         sys.stderr.write("\nDatabase error for TrajId %s "
                                          "Error-%d: %s" % (dirs, error.args[0], error.args[1]))
                         errcount += 1
@@ -214,7 +210,7 @@ def _daemon_process_():  # Daemon that copies the folder form temp folder to the
                             cursor.execute('INSERT into TrajFiles(FileName, UserName, CheckSum,'
                                            'TrajId, FilePathName, Date) VALUES( %s, %s, %s, %s, %s, %s)',
                                            (trajFiles, userName, checkSum, trajId, destFolder, systemDate))
-                        except (MySQLdb.ProgrammingError, MySQLdb.OperationalError) as error:
+                        except (pymysql.ProgrammingError, pymysql.OperationalError) as error:
                             sys.stderr.write("\nDatabase error for file %s for TrajId %s Error %d: %s"
                                              % (trajFiles, dirs, error.args[0], error.args[1]))
                             errcount += 1
@@ -240,7 +236,7 @@ def _daemon_process_():  # Daemon that copies the folder form temp folder to the
                             'INSERT INTO TrajData VALUES("%s","%s","%s","%s","%s","%s","%s","%s","%s")'
                             % (trajId, userName, systemDate, molName, progName, userComments, pmfFlag, doi, pid)
                         )
-                    except (MySQLdb.ProgrammingError, MySQLdb.OperationalError) as error:
+                    except (pymysql.ProgrammingError, pymysql.OperationalError) as error:
                         sys.stderr.write("\nDatabase error for trajid -%s.Error %d: %s."
                                          % (dirName, error.args[0], error.args[1]))
                         errcount += 1
@@ -253,7 +249,7 @@ def _daemon_process_():  # Daemon that copies the folder form temp folder to the
                                                                                               new_dir_size, trajId,
                                                                                               destFolder, systemDate)
                                        )
-                    except (MySQLdb.ProgrammingError, MySQLdb.OperationalError) as error:
+                    except (pymysql.ProgrammingError, pymysql.OperationalError) as error:
                         sys.stderr.write("\nDatabase error for trajid -%s in Files "
                                          "database.Error %d: %s." % (dirName, error.args[0], error.args[1]))
                         errcount += 1
@@ -327,7 +323,7 @@ def _daemonize_(stdin='/dev/null', stdout='/dev/null', stderr='/dev/null'):
         f.flush()
         si = open(stdin, 'r')
         so = open(stdout, 'a+')
-        se = open(stderr, 'a+', 0)
+        se = open(stderr, 'a+')  # PCB removed ,0 present in previous incarnation - buffering not allowed now
         os.dup2(si.fileno(), sys.stdin.fileno())
         os.dup2(so.fileno(), sys.stdout.fileno())
         os.dup2(se.fileno(), sys.stderr.fileno())

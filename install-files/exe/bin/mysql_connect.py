@@ -19,23 +19,18 @@ Copyright (C) 2010 University of Oxford. All rights reserved.
 
 """
 
-try:
-    import pymysql
-    pymysql.install_as_MySQLdb()
-except ImportError:
-    pass
 
-import MySQLdb
+import pymysql
 import sys
 
 
 def _mysql_connect_():
     try:
-        conn = MySQLdb.connect(host="",
+        conn = pymysql.connect(host="",
                                user="",
                                passwd="",
                                db="")
-    except MySQLdb.Error as e:
+    except pymysql.Error as e:
         sys.stderr.write("\nCannot connect to Bookshelf database. Error %d: %s." % (e.args[0], e.args[1]))
         sys.exit(1)
     return conn

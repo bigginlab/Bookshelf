@@ -18,14 +18,10 @@ Copyright (C) 2010 University of Oxford. All rights reserved.
     refactored and updated by Philip Biggin 2020
 
 """
-try:
-    import pymysql
-    pymysql.install_as_MySQLdb()
-except ImportError:
-    pass
+
 
 import sys
-import MySQLdb
+import pymysql
 import shutil
 import optparse
 
@@ -74,7 +70,7 @@ if __name__ == "__main__":
             print("Number of files deleted in TrajFiles database: %d" % cursor.rowcount)
             cursor.execute("delete from TrajData where TrajId = '%s'" % eraseOption)  # delete entry from the database
             print("Number of files deleted in TrajData database: %d " % cursor.rowcount)
-        except (MySQLdb.ProgrammingError, MySQLdb.OperationalError) as error:
+        except (pymysql.ProgrammingError, pymysql.OperationalError) as error:
             print("Error deleting entries from database for trajid -%s. Error %d: %s"
                   % (eraseOption, error.args[0], error.args[1]))
             sys.exit(1)
@@ -93,7 +89,7 @@ if __name__ == "__main__":
                 print("Number of files deleted in TrajFiles database: %d" % cursor.rowcount)
                 cursor.execute("delete from TrajData where TrajId = '%s'" % items)  # delete entry from the database
                 print("Number of files deleted in TrajData database: %d" % cursor.rowcount)
-            except (MySQLdb.ProgrammingError, MySQLdb.OperationalError) as error:
+            except (pymysql.ProgrammingError, pymysql.OperationalError) as error:
                 print("Error deleting entries from database for trajid -%s. Error %d: %s"
                       % (items, error.args[0], error.args[1]))
                 sys.exit(1)
