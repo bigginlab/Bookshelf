@@ -18,6 +18,12 @@ Copyright (C) 2010 University of Oxford. All rights reserved.
     refactore by Philip Biggin 2020
 
 """
+try:
+    import pymysql
+    pymysql.install_as_MySQLdb()
+except ImportError:
+    pass
+
 import MySQLdb
 import sys
 

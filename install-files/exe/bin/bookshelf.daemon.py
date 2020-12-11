@@ -18,7 +18,11 @@ Copyright (C) 2010 University of Oxford. All rights reserved.
     updated and refactored December 2020 by Philip Biggin
 
 """
-
+try:
+    import pymysql
+    pymysql.install_as_MySQLdb()
+except ImportError:
+    pass
 
 import MySQLdb
 import shutil

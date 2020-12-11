@@ -19,6 +19,12 @@ Copyright (C) 2010 University of Oxford. All rights reserved.
 
 """
 
+try:
+    import pymysql
+    pymysql.install_as_MySQLdb()
+except ImportError:
+    pass
+
 import formatText
 import MySQLdb
 import optparse
