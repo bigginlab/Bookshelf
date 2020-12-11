@@ -19,8 +19,6 @@ Copyright (C) 2010 University of Oxford. All rights reserved.
 
 """
 
-
-
 import formatText
 import pymysql
 import optparse
@@ -29,9 +27,9 @@ from dbConnect import _dbConnect_
 
 
 class Search_TrajData:
-
+    def __init__(self, required_options):
+        self.required_options = -searchOption
     #    PCB  - -  following is not good practice so changed to be part of the search_options routine -- PCB
-    #    def __init__(self, required_options):
     #        class Check_OptionParser (optparse.OptionParser):
     #            def _check_required_(self, opt):
     #                option = self.get_option(opt)
