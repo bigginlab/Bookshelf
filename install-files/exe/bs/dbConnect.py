@@ -15,16 +15,19 @@ Copyright (C) 2010 University of Oxford. All rights reserved.
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+    refactore by Philip Biggin 2020
+
 """
 import MySQLdb
-import os,sys
-def _dbConnect_():
-	try:
-		conn=MySQLdb.connect(host="localhost",
-		        			user="BS.reader",
-		    				db="bookshelf")
-	except MySQLdb.Error, e:
-		sys.stderr.write ("\nError %d: %s" % (e.args[0], e.args[1]))
-		sys.exit (1)
-	return conn
+import sys
 
+
+def _dbConnect_():
+    try:
+        conn = MySQLdb.connect(host="localhost",
+                               user="BS.reader",
+                               db="bookshelf")
+    except MySQLdb.Error as e:
+        sys.stderr.write("\nError %d: %s" % (e.args[0], e.args[1]))
+        sys.exit(1)
+    return conn

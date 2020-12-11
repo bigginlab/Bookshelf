@@ -14,6 +14,7 @@ Copyright (C) 2010 University of Oxford. All rights reserved.
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
+
 <?php
 	include_once('includes/authentication.inc.php');
 	include_once('includes/header.html');
