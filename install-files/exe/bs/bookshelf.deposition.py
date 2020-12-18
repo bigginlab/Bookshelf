@@ -35,47 +35,34 @@ destPath = homeDir + "bookshelf/temp/"  # PATH-The directory where the trajector
 
 
 class Universal_Get_Options:
-    #  PCB  - -   Reworked following into _get_trajdata  - - PCB
-    # def __init__(self, required_options):
-    #    class Check_OptionParser (optparse.OptionParser):
-    #        def _check_required_(self, opt):
-    #            option = self.get_option(opt)
-    #        if getattr(self.values, option) is None:
-    #            self.error("\n %s option not supplied" % option)
 
-    #    usage = """\n \n \"%prog -m <protein name> -p <program name> -c <"comments"> -f <pmf> <file1> \
-    #        <file2> <file3> <file4>\" \
-    #       This program archives molecular dynamics trajectories in a central repository. All options \
-    #        except -f are required. The -f flag accepts 'yes' or 'no' as values and the default value='no'. \
-    #        The files themselves are given as command line arguments.You must always supply the trajectory \
-    #        (eg a dcd or xtc), a structure (pdb), a topology (psf or top, itp, tpr), and a run input \
-    #        (inp script, mdp). Additional files are simply added to the command line (such as additional\
-    #        streaming str files or itps).To a minimum one should be able to \
-    #        (1) analyze the simulation and \
-    #        (2) rerun the simulation (possibly with changed parameters) using the files submitted. \
-    #        The files with the appropriate extensions need to be deposited depending on the MD tool \
-    #        used to generate the trajectory. \
-    #        """
-    #    self.parser = Check_OptionParser(usage=usage)
-    #    self._get_trajdata_()
-    #    (self.options, self.args) = self.parser.parse_args()
-    #    for req_option in required_options:
-    #        self.parser._check_required_(req_option)
+    def __init__(self, options="", args=""):
+        self.options = options
+        self.args = args
+        self._get_trajdata_()
 
     def _get_trajdata_(self):  # function to parse the options
-        self.parser = optparse.OptionParser(usage='usage: %prog -m <protein name> -p <program name> -c <"comments"> -f \
-            <pmf> -d <doi> -i pubmedID <file1> <file2> <file3> <file4>\
-            This program archives molecular dynamics trajectories in a central repository. Protein name \
-            program name and comments are required fields as are the four files \
-            themselves, which are given as command line arguments. You must always supply the trajectory \
-            (eg a dcd or xtc), a structure (pdb), a topology (psf or top, itp, tpr), and a run input \
-            (inp script, mdp). Additional files are simply added to the command line (such as additional\
-            streaming str files or itps).To a minimum one should be able to \
-            (1) analyze the simulation and \
-            (2) rerun the simulation (possibly with changed parameters) using the files submitted. \
-            The files with the appropriate extensions need to be deposited depending on the MD tool \
-            used to generate the trajectory.\
-            The -f flag accepts "yes" or "no" as values and the default value="no".')
+        self.parser = optparse.OptionParser(usage='usage: %prog -m <protein name> -p <program name> -c <"comments"> '
+                                                  '-f <pmf> -d <doi> -i pubmedID <file1> <file2> <file3> <file4>'
+                                                  ' \n \n This program archives molecular dynamics trajectories in a '
+                                                  'central repository. Protein name program name and comments are '
+                                                  'required fields as are the four files themselves, which are given '
+                                                  'as command line arguments. You must always supply the trajectory '
+                                                  '(eg a dcd or xtc), a structure (pdb), a topology (psf or top, itp, '
+                                                  'tpr), and a run input (inp script, mdp). Additional files are '
+                                                  'simply added to the command line (such as additiona streaming str '
+                                                  'files itps). To a minimum one should be able to:'
+                                                  '\n'
+                                                  '\n (1) analyze the simulation and'
+                                                  '\n'
+                                                  '\n (2) rerun the simulation (possibly with changed parameters) '
+                                                  'using the files submitted. The files with the appropriate '
+                                                  'extensions need to be deposited depending on the MD tool used to '
+                                                  'generate the trajectory.'
+                                                  '\n'
+                                                  '\n'
+                                                  'The -f flag accepts "yes" or "no" as values and the default '
+                                                  'value="no".')
 
         self.parser.add_option("-m", "--molname", action="store", dest="molName",
                                help="\nEnter the name of the protein or the molecule.")
@@ -93,12 +80,12 @@ class Universal_Get_Options:
         self.parser.add_option("-i", "--pid", action="store", type="string", default="none", dest="pid",
                                help="\nEnter the flag for pubmed id. It takes pubmed id (not the url) and \
                                    the default is set to NONE.")
-        (options, args) = self.parser.parse_args()
-        if not options.molName:
+        (self.options, self.args) = self.parser.parse_args()
+        if not self.options.molName:
             self.parser.error('No name of protein or molecule given')
-        if not options.progName:
+        if not self.options.progName:
             self.parser.error('No name of programe name given')
-        if not options.userComments:
+        if not self.options.userComments:
             self.parser.error('No comments provided')
 
 
@@ -232,16 +219,13 @@ def sizeError(errorList, trajFiles, checkSum, newCheckSum):
     return errorList
 
 
+# following md5File routine updated by PCB 2020
 def _md5File_(FileName):
-    fh = open(FileName)
-    digest = hashlib.md5()
-    while 1:
-        buf = fh.read(4096)
-        if buf == "":
-            break
-        digest.update(buf)
-    fh.close()
-    return digest.hexdigest()
+    hash_md5 = hashlib.md5()
+    with open(FileName, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
 
 
 def _md5Check_(FileName):

@@ -66,16 +66,13 @@ def _move_folder_(dirs):  # move folder to junkFolder if deposition is not succe
             sys.exit(1)
 
 
+# md5File updaed by PCB in 2020
 def _md5File_(FileName):
-    fh = open(FileName)
-    digest = hashlib.md5()
-    while 1:
-        buf = fh.read(4096)
-        if buf == "":
-            break
-        digest.update(buf)
-    fh.close()
-    return digest.hexdigest()
+    hash_md5 = hashlib.md5()
+    with open(FileName, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
 
 
 def _md5Check_(FileName):

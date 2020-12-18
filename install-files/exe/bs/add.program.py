@@ -26,41 +26,25 @@ from xml.dom.minidom import Document
 
 class Add_program:
 
-    #  PCB - - pushed in to _search_Options below - - PCB
-    # def __init__(self,required_options):
-    #    class Check_OptionParser (optparse.OptionParser):
-    #        def _check_required_ (self, opt):
-    #                option = self.get_option(opt)
-    #
-    #                # Assumes the option's 'default' is set to None!
-    #        if (getattr(self.values, option.dest) == None):
-    #                self.error("\n %s option not supplied." % option)
-    #    usage = """\n \n \"%prog -p <program name> <.ext1> <.ext2><.ext3><.ext4>\" where program name is the
-    #    software tool you want to add to the existing list and ext1, ext2 ext3, ext4 etc.. are the extensions
-    #    for the input, topology, coordinate,trajectory files. The program name is followed by -p flag and the
-    #    extensions are prived as arguments. The number of extensions can be more than four depending on what
-    #    files you want to make it mandatory for the users to deposit while submitting a trajectory.
-    #     """
-    #    self.parser = Check_OptionParser(usage=usage)
-    #    self._search_options_()
-    #    (self.options, self.args) = self.parser.parse_args()
-    #    for req_option in required_options:
-    #            self.parser._check_required_(req_option)
+    def __init__(self, options="", args=""):
+        self.options = options
+        self.args = args
+        self._search_options_()
 
     def _search_options_(self):        # function to parse the search option
-        self.parser = optparse.OptionParser(usage='usage: %prog -p <program name> <.ext1> <.ext2><.ext3><.ext4> \
-                                                   where program name is the software tool you want to add to the \
-                                                   existing list and ext1, ext2 ext3, ext4 etc.. are the extensions \
-                                                   for the input, topology, coordinate,trajectory files. \
-                                                   The program name is followed by -p flag and the extensions \
-                                                   are prived as arguments. The number of extensions can be more \
-                                                   than four depending on what files you want to make it mandatory \
-                                                   for the users to deposit while submitting a trajectory.')
+        self.parser = optparse.OptionParser(usage='usage: %prog -p <program name> <.ext1> <.ext2> <.ext3> <.ext4> '
+                                                  '\n where program name is the software tool you want to add to the '
+                                                  'existing list and ext1, ext2 ext3, ext4 etc.. are the extensions '
+                                                  'for the input, topology, coordinate,trajectory files. '
+                                                  '\n \n The program name is followed by -p flag and the extensions '
+                                                  'are prived as arguments. \n \n The number of extensions can be more '
+                                                  'than four depending on what files you want to make it mandatory '
+                                                  'for the users to deposit while submitting a trajectory.')
         self.parser.add_option("-p", "--programme", action="store", dest="progname",
-                               help="\nEnter the program name to be added followed by the extensions for the files \
-                               you want to make it mandatory for the users for the depostion of trajectory")
-        (options, args) = self.parser.parse_args()
-        if not options.progname:   # if no programe name provided
+                               help='\nEnter the program name to be added followed by the extensions for the files '
+                               'you want to make it mandatory for the users for the depostion of trajectory')
+        (self.options, self.args) = self.parser.parse_args()
+        if not self.options.progname:   # if no programe name provided
             self.parser.error('No programme name given')
 
 

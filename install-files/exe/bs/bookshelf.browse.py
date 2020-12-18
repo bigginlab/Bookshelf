@@ -25,34 +25,24 @@ import optparse
 import sys
 from dbConnect import _dbConnect_
 
+#  STILL NEEEDS FIXING- Just need to parse the args dont' we?
+
 
 class Search_TrajData:
-    def __init__(self, required_options):
-        self.required_options = -searchOption
-    #    PCB  - -  following is not good practice so changed to be part of the search_options routine -- PCB
-    #        class Check_OptionParser (optparse.OptionParser):
-    #            def _check_required_(self, opt):
-    #                option = self.get_option(opt)
-    # ###### Assumes the option's 'default' is set to None!
-    #            if (getattr(self.values, option.dest) is None):
-    #                self.error("\n %s option not supplied." % option)
-    #        usage = """\n \n \"%prog -s <search keywords> \" The program looks for the keywords
-    #        in protein name, program name, user comments, username or trajid.
-    # """
-    #        self.parser = Check_OptionParser(usage=usage)
-    #        self._search_options_()
-    #        (self.options, self.args) = self.parser.parse_args()
-    #        for req_option in required_options:
-    #            self.parser._check_required_(req_option)
+
+    def __init__(self, options="", args=""):
+        self.options = options
+        self.args = args
+        self._search_options_()
 
     def _search_options_(self):        # function to parse the search option
-        self.parser = optparse.OptionParser(usage='usage: %prog -s <search keywords>   The program looks for \
-                                          keywords in protein name, programe name, user comments, \
-                                          username or trajid')
+        self.parser = optparse.OptionParser(usage='usage: %prog -s <search keywords>   The program looks for '
+                                                  'keywords in protein name, programe name, user comments, '
+                                                  'username or trajid')
         self.parser.add_option("-s", "--search", action="store", dest="SearchOpt",
                                help="\nEnter the keyword to search the database.")
-        (options, args) = self.parser.parse_args()
-        if not options.SearchOpt:   # if no search options provided
+        (self.options, self.args) = self.parser.parse_args()
+        if not self.options.SearchOpt:   # if no search options provided
             self.parser.error('No search options given')
 
 
@@ -74,7 +64,7 @@ def WriteData(rows, searchWord):
 
 
 if __name__ == "__main__":
-    DataParser = Search_TrajData(("-s",))
+    DataParser = Search_TrajData()
     options = DataParser.options
     KeyWords = DataParser.args
     searchOption = options.SearchOpt
