@@ -202,9 +202,9 @@ if [ $(id -u) -eq 0 ]; then
   	SELECT COUNT(*)
   	INTO bswcheck
     	FROM mysql.user
-      WHERE User = '$bswriter' and  Host = 'localhost';
+      WHERE User = '$bswriter' and  Host = '127.0.0.1';
    	IF bswcheck > 0 THEN
-         DROP USER '$bswriter'@'localhost' ;
+         DROP USER '$bswriter'@'127.0.0.1' ;
   	END IF;
 	END ;$$
 	DELIMITER ;
@@ -222,20 +222,20 @@ if [ $(id -u) -eq 0 ]; then
   	SELECT COUNT(*)
   	INTO bsrcheck
     	FROM mysql.user
-        WHERE User = '$bsreader' and  Host = 'localhost';
+        WHERE User = '$bsreader' and  Host = '127.0.0.1';
    	IF bsrcheck > 0 THEN
-         DROP USER '$bsreader'@'localhost' ;
+         DROP USER '$bsreader'@'127.0.0.1' ;
   	END IF;
 	END ;$$
 	DELIMITER ;
 	CALL bookshelf.drop_user_if_exists() ;
 	DROP PROCEDURE IF EXISTS bookshelf.drop_users_if_exists ;
 
-	CREATE USER '$bswriter'@'localhost' IDENTIFIED BY '$pass';
-	GRANT ALL PRIVILEGES  ON bookshelf.* TO '$bswriter'@'localhost'
+	CREATE USER '$bswriter'@'127.0.0.1' IDENTIFIED BY '$pass';
+	GRANT ALL PRIVILEGES  ON bookshelf.* TO '$bswriter'@'127.0.0.1'
  	WITH GRANT OPTION;
-	CREATE USER '$bsreader'@'localhost';
-	GRANT SELECT  ON bookshelf.* TO '$bsreader'@'localhost';
+	CREATE USER '$bsreader'@'127.0.0.1';
+	GRANT SELECT  ON bookshelf.* TO '$bsreader'@'127.0.0.1';
 	FLUSH PRIVILEGES;
 	
 	DROP DATABASE IF EXISTS bslog;
@@ -261,17 +261,17 @@ if [ $(id -u) -eq 0 ]; then
   	SELECT COUNT(*)
   	INTO bslcheck
     	FROM mysql.user
-        WHERE User = '$bslogin' and  Host = 'localhost';
+        WHERE User = '$bslogin' and  Host = '127.0.0.1';
    	IF bslcheck > 0 THEN
-        DROP USER '$bslogin'@'localhost' ;
+        DROP USER '$bslogin'@'127.0.0.1' ;
   	END IF;
 	END ;$$
 	DELIMITER ;
 	CALL bslog.drop_user_if_exists() ;
 	DROP PROCEDURE IF EXISTS bslog.drop_users_if_exists ;
 	SET SQL_MODE=@OLD_SQL_MODE ;
-	CREATE USER '$bslogin'@'localhost' IDENTIFIED BY '$loginpass';
-	GRANT ALL PRIVILEGES  ON login.* TO '$bslogin'@'localhost'
+	CREATE USER '$bslogin'@'127.0.0.1' IDENTIFIED BY '$loginpass';
+	GRANT ALL PRIVILEGES  ON login.* TO '$bslogin'@'127.0.0.1'
  	WITH GRANT OPTION;
 	FLUSH PRIVILEGES;"
 	
@@ -279,17 +279,17 @@ if [ $(id -u) -eq 0 ]; then
 	
 ############## Running mysql queries to check if the database already exists ##############
 
-	sed -i 's/host=""/host="localhost"/g' ./exe/bin/mysql_connect.py
+	sed -i 's/host=""/host="127.0.0.1"/g' ./exe/bin/mysql_connect.py
 	sed -i 's/user=""/user="'$bswriter'"/g' ./exe/bin/mysql_connect.py
 	sed -i 's/passwd=""/passwd="'$pass'"/g' ./exe/bin/mysql_connect.py
 	sed -i 's/db=""/db="bookshelf"/g' ./exe/bin/mysql_connect.py
-	sed -i 's/host=""/host="localhost"/g' ./exe/bs/dbConnect.py
+	sed -i 's/host=""/host="127.0.0.1"/g' ./exe/bs/dbConnect.py
 	sed -i 's/user=""/user="'$bsreader'"/g' ./exe/bs/dbConnect.py
 	sed -i 's/db=""/db="bookshelf"/g' ./exe/bs/dbConnect.py
-	sed -i 's/server=""/server="localhost"/g' ./exe/web/Bookshelf/includes/mysql_connect.php
+	sed -i 's/server=""/server="127.0.0.1"/g' ./exe/web/Bookshelf/includes/mysql_connect.php
 	sed -i 's/user=""/user="'$bsreader'"/g' ./exe/web/Bookshelf/includes/mysql_connect.php 
 	sed -i 's/db=""/db="bookshelf"/g' ./exe/web/Bookshelf/includes/mysql_connect.php
-	sed -i 's/server=""/server="localhost"/g' ./exe/web/Bookshelf/includes/login_connect.php 
+	sed -i 's/server=""/server="127.0.0.1"/g' ./exe/web/Bookshelf/includes/login_connect.php 
 	sed -i 's/user=""/user="'$bslogin'"/g' ./exe/web/Bookshelf/includes/login_connect.php 
 	sed -i 's/passwd=""/passwd="'$loginpass'"/g' ./exe/web/Bookshelf/includes/login_connect.php 
 	sed -i 's/db=""/db="login"/g' ./exe/web/Bookshelf/includes/login_connect.php 
