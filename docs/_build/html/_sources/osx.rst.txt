@@ -1,0 +1,24 @@
+Mac Install Specific Instructions
+==================================
+
+   i.  You will need to ensure that the path to mysql can be found for example
+
+        export PATH="//usr/local/mysql-8.0.22-macos10.15-x86_64/bin/:$PATH"
+
+   ii.  To get the MySQLDB modules in python easiest thing to do is :-
+
+           sudo easy_install pymysql
+
+
+or
+
+.. code-block:: sh
+     :  conda install -c anaconda pymysql
+
+The code will look for this module to import query functions from.
+
+
+
+   This completes the Installation of the main service.
+
+
