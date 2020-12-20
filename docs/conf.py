@@ -17,7 +17,7 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
-import recommonmarksphinx
+
 
 # -- Project information -----------------------------------------------------
 
@@ -44,7 +44,6 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.extlinks',
 ]
-
 
 autosummary_generate = True
 napoleon_google_docstring = False
