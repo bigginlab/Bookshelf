@@ -11,6 +11,7 @@ python:
   version: 3.7
   install:
     - method: pip
+      path: .
 
 # Optionally build your docs in additional formats such as PDF
 formats:
