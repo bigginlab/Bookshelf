@@ -4,7 +4,6 @@ A simple tool to manage trajectories
 """
 import sys
 from setuptools import setup, find_packages
-import versioneer
 
 short_description = __doc__.split("\n")
 
