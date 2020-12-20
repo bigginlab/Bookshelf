@@ -1,4 +1,5 @@
 # Bookshelf
-Repo of the Bookshelf project - a project to help manage trajectory data within your laboratory - see http://sbcb.bioch.ox.ac.uk/bookshelf/ for more details.
+Repo of the Bookshelf project - a project to help manage trajectory data within your laboratory.  See https://bookshelf.readthedocs.io/ for full details.
 
-See Bookshelf-install.txt under the docs directory for installation instructions
+See https://bookshelf.readthedocs.io/en/latest/installation.html for installation instructions.
+
