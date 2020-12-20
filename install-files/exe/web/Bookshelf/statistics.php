@@ -16,7 +16,9 @@ Copyright (C) 2010 University of Oxford. All rights reserved.
 -->
 
 <?php
-	include_once('includes/authentication.inc.php');
+//  Uncomment out the next line if you need users to login/authenticate
+//	include_once('includes/authentication.inc.php');
+
 	include_once('includes/header.html');
 	require_once('includes/mysql_connect.php');
 	$db="BookShelf";
