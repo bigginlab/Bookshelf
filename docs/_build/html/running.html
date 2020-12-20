@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Using Bookshelf &#8212; bookshelf 2.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Web Browsing Interface" href="web.html" />
+    <link rel="prev" title="Bookshelf Installation for Unix" href="installation.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="using-bookshelf">
+<h1>Using Bookshelf<a class="headerlink" href="#using-bookshelf" title="Permalink to this headline">¶</a></h1>
+<p>Bookshelf is written in  python and is tested on linux and mac.  It is a command line tool, but the database can also be easily queried via a web-interface using something like php.  Example php code is also provide to facilitate that.</p>
+<div class="section" id="deposition">
+<h2>Deposition<a class="headerlink" href="#deposition" title="Permalink to this headline">¶</a></h2>
+<p>To deposit and catalogue a trajectory, the user needs to enter details like the protein name, program name(software tool used to generate the trajectory) and a few lines about the trajectory and the file names they want to deposit. It is essential to deposit all the files required to run the simulation e.g input, topology, coordinates, trajectory and stream files.</p>
+<div class="section" id="simple-md-deposition">
+<h3>Simple MD deposition<a class="headerlink" href="#simple-md-deposition" title="Permalink to this headline">¶</a></h3>
+<p>The command to run the deposition is</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python bookshelf.deposit.py -m &lt;protein name&gt; -p &lt;program name&gt; -c &lt;&quot;comments&quot;&gt; &lt;test.inp&gt; &lt;test.mdp&gt; &lt;test.xtc&gt; &lt;test.pdb&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="pmf-deposition">
+<h3>PMF Deposition<a class="headerlink" href="#pmf-deposition" title="Permalink to this headline">¶</a></h3>
+<p>Potential of Mean Force calculations are also fairly routine these days and bookshelf can handle these as well.  Prior to  deposition, copy all the files or directories into a folder and deposit the entire folder.  Add the  -f flag with value yes while passing the arguments.</p>
+<p>The command for the pmf deposition is</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python bookshelf.py -m &lt;protein name&lt; -p &lt;program name&gt; -c &lt;&quot;comments&quot;&gt; -f &lt;yes&gt; &lt;foldername&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="linking-to-publications">
+<h3>Linking to Publications<a class="headerlink" href="#linking-to-publications" title="Permalink to this headline">¶</a></h3>
+<p>Bookshelf can also link to relevanet publications or a DOI.  You can add these with the -i and -d flags.  Enter only the Ids and not the entire url as the script will raise an error.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python bookshelf.depsoit.py -m &lt;protein name&lt; -p &lt;program name&gt; -c &lt;&quot;comments&quot;&gt; -f &lt;no&gt; -d &lt;doi-identifier&gt; -i&lt;pubmed-id &gt;&lt;test.inp&gt; &lt;test.mdp&gt; &lt;test.xtc&gt; &lt;test.pdb&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="known-packages">
+<h2>Known Packages<a class="headerlink" href="#known-packages" title="Permalink to this headline">¶</a></h2>
+<p>Bookshelf already knows about several well-used MD engines.  It accepts all the files use to generate trajectories by different simulation packages such as CHARMM, GROMACS, NAMD and Gaussian. It checks for the essential files required to run the trajectory but there is no limitation to the number of files deposited.</p>
+<p>Adding other simulation packages
+It is easy to add a new simulation package.  To add a simulation package run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$python add.program.py –p &lt;program name&gt; &lt;.ext1&gt; &lt;.ext2&gt; &lt;.ext3&gt; &lt;.ext4&gt;
+</pre></div>
+</div>
+<p>where program name is the name of software package one wants to add;  ext1, ext2, etc are the extensions for the mandatory files that need to be submitted for the deposition.</p>
+</div>
+<div class="section" id="how-is-the-data-stored">
+<h2>How is the data stored?<a class="headerlink" href="#how-is-the-data-stored" title="Permalink to this headline">¶</a></h2>
+<p>The files are stored as flat files in the storage area. At installation the script creates a sub-directory and copies all the files to the directory and enters the metadata in the mysql database.  The files and the metadata are stored with unique id named as <em>Trajid</em>.</p>
+</div>
+<div class="section" id="how-to-search-the-database">
+<h2>How to search the database?<a class="headerlink" href="#how-to-search-the-database" title="Permalink to this headline">¶</a></h2>
+<p>The metadata can be accessed by command line or web interface. Using the command line, the database can be searched using keyword which can be a protein name or program name or user name or keywords in comments.</p>
+<p>The command to run the script is</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python bookshelf.browse.py -s &lt;keyword&gt;
+</pre></div>
+</div>
+<p>The meta data can be also accessed through a web interface. A keyword search can be performed or it can be browsed by date, protein name, username and program name. (see Web browsing interface for more information)</p>
+</div>
+<div class="section" id="deletion">
+<h2>Deletion<a class="headerlink" href="#deletion" title="Permalink to this headline">¶</a></h2>
+<p>An entry in the bookshelf database can be deleted by the  bookshelf administrator:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$python ./bookshelf/bin/exe/bookshelf.erase.py -e &lt;trajid&gt;
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">bookshelf</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="what.html">What is Bookshelf?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Bookshelf Installation for Unix</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using Bookshelf</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#deposition">Deposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#known-packages">Known Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-is-the-data-stored">How is the data stored?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-search-the-database">How to search the database?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#deletion">Deletion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="web.html">Web Browsing Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="additional.html">Additional Notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="installation.html" title="previous chapter">Bookshelf Installation for Unix</a></li>
+      <li>Next: <a href="web.html" title="next chapter">Web Browsing Interface</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Philip C Biggin.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/running.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -202,15 +202,16 @@ if [ $(id -u) -eq 0 ]; then
   	SELECT COUNT(*)
   	INTO bswcheck
     	FROM mysql.user
-      WHERE User = '$bswriter' and  Host = 'localhost';
+      WHERE User = '$bswriter' and  Host = '127.0.0.1';
    	IF bswcheck > 0 THEN
-         DROP USER '$bswriter'@'localhost' ;
+         DROP USER '$bswriter'@'127.0.0.1' ;
   	END IF;
 	END ;$$
 	DELIMITER ;
 	CALL bookshelf.drop_user_if_exists() ;
 	DROP PROCEDURE IF EXISTS bookshelf.drop_users_if_exists ;
 
+        
 	SET SQL_MODE=@OLD_SQL_MODE ;
 	SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ANSI';
 	USE bookshelf;
@@ -222,21 +223,24 @@ if [ $(id -u) -eq 0 ]; then
   	SELECT COUNT(*)
   	INTO bsrcheck
     	FROM mysql.user
-        WHERE User = '$bsreader' and  Host = 'localhost';
+        WHERE User = '$bsreader' and  Host = '127.0.0.1';
    	IF bsrcheck > 0 THEN
-         DROP USER '$bsreader'@'localhost' ;
+         DROP USER '$bsreader'@'127.0.0.1' ;
   	END IF;
 	END ;$$
 	DELIMITER ;
 	CALL bookshelf.drop_user_if_exists() ;
 	DROP PROCEDURE IF EXISTS bookshelf.drop_users_if_exists ;
 
-	CREATE USER '$bswriter'@'localhost' IDENTIFIED BY '$pass';
-	GRANT ALL PRIVILEGES  ON bookshelf.* TO '$bswriter'@'localhost'
+	CREATE USER '$bswriter'@'127.0.0.1' IDENTIFIED BY '$pass';
+	GRANT ALL PRIVILEGES  ON bookshelf.* TO '$bswriter'@'127.0.0.1'
  	WITH GRANT OPTION;
-	CREATE USER '$bsreader'@'localhost';
-	GRANT SELECT  ON bookshelf.* TO '$bsreader'@'localhost';
+        ALTER USER 'BS.writer'@'127.0.0.1' IDENTIFIED WITH mysql_native_password BY '$pass';
+ 
+	CREATE USER '$bsreader'@'127.0.0.1';
+	GRANT SELECT  ON bookshelf.* TO '$bsreader'@'127.0.0.1';
 	FLUSH PRIVILEGES;
+        ALTER USER 'BS.reader'@'127.0.0.1' IDENTIFIED WITH mysql_native_password BY '';
 	
 	DROP DATABASE IF EXISTS bslog;
 	CREATE DATABASE bslog;
@@ -261,34 +265,35 @@ if [ $(id -u) -eq 0 ]; then
   	SELECT COUNT(*)
   	INTO bslcheck
     	FROM mysql.user
-        WHERE User = '$bslogin' and  Host = 'localhost';
+        WHERE User = '$bslogin' and  Host = '127.0.0.1';
    	IF bslcheck > 0 THEN
-        DROP USER '$bslogin'@'localhost' ;
+        DROP USER '$bslogin'@'127.0.0.1' ;
   	END IF;
 	END ;$$
 	DELIMITER ;
 	CALL bslog.drop_user_if_exists() ;
 	DROP PROCEDURE IF EXISTS bslog.drop_users_if_exists ;
 	SET SQL_MODE=@OLD_SQL_MODE ;
-	CREATE USER '$bslogin'@'localhost' IDENTIFIED BY '$loginpass';
-	GRANT ALL PRIVILEGES  ON login.* TO '$bslogin'@'localhost'
+	CREATE USER '$bslogin'@'127.0.0.1' IDENTIFIED BY '$loginpass';
+	GRANT ALL PRIVILEGES  ON login.* TO '$bslogin'@'127.0.0.1'
  	WITH GRANT OPTION;
-	FLUSH PRIVILEGES;"
+	FLUSH PRIVILEGES;
+        ALTER USER 'BS.login'@'127.0.0.1' IDENTIFIED WITH mysql_native_password BY '$loginpass';"
 	
 	mysql -u root -p$mysqlpass  -e "$CMD"	
 
 		#Add mysql username, password to the files
-	sed -ie  's/host=""/host="localhost"/g' ./exe/bin/mysql_connect.py 
+	sed -ie  's/host=""/host="127.0.0.1"/g' ./exe/bin/mysql_connect.py 
 	sed -ie  's/user=""/user="'$bswriter'"/g' ./exe/bin/mysql_connect.py 
 	sed -ie  's/passwd=""/passwd="'$pass'"/g' ./exe/bin/mysql_connect.py 
 	sed -ie  's/db=""/db="bookshelf"/g' ./exe/bin/mysql_connect.py
-	sed -ie  's/host=""/host="localhost"/g' ./exe/bs/dbConnect.py 
+	sed -ie  's/host=""/host="127.0.0.1"/g' ./exe/bs/dbConnect.py 
 	sed -ie  's/user=""/user="'$bsreader'"/g' ./exe/bs/dbConnect.py 
 	sed -ie  's/db=""/db="bookshelf"/g' ./exe/bs/dbConnect.py 
-	sed -ie  's/server=""/server="localhost"/g' ./exe/web/Bookshelf/includes/mysql_connect.php 
+	sed -ie  's/server=""/server="127.0.0.1"/g' ./exe/web/Bookshelf/includes/mysql_connect.php 
 	sed -ie  's/user=""/user="'$bsreader'"/g' ./exe/web/Bookshelf/includes/mysql_connect.php  
 	sed -ie  's/db=""/db="bookshelf"/g' ./exe/web/Bookshelf/includes/mysql_connect.php 
-	sed -ie  's/server=""/server="localhost"/g' ./exe/web/Bookshelf/includes/login_connect.php 
+	sed -ie  's/server=""/server="127.0.0.1"/g' ./exe/web/Bookshelf/includes/login_connect.php 
 	sed -ie  's/user=""/user="'$bslogin'"/g' ./exe/web/Bookshelf/includes/login_connect.php 
 	sed -ie  's/passwd=""/passwd="'$loginpass'"/g' ./exe/web/Bookshelf/includes/login_connect.php 
 	sed -ie  's/db=""/db="login"/g' ./exe/web/Bookshelf/includes/login_connect.php 

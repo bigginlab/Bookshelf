@@ -15,7 +15,9 @@ Copyright (C) 2010 University of Oxford. All rights reserved.
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <?php
-	include_once('includes/authentication.inc.php');
+//  Uncomment out the next line if you need users to login/authenticate to use this feature
+//	include_once('includes/authentication.inc.php');
+
 	include_once('includes/header.html');
 	require_once('includes/mysql_connect.php');// connection to the mysql database
 	$keyword=$_GET['browse_db'];

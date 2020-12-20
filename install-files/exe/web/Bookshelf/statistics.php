@@ -14,8 +14,11 @@ Copyright (C) 2010 University of Oxford. All rights reserved.
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
+
 <?php
-	include_once('includes/authentication.inc.php');
+//  Uncomment out the next line if you need users to login/authenticate
+//	include_once('includes/authentication.inc.php');
+
 	include_once('includes/header.html');
 	require_once('includes/mysql_connect.php');
 	$db="BookShelf";

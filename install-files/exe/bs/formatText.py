@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 """
 Copyright (C) 2010 University of Oxford. All rights reserved.
 
@@ -15,28 +15,32 @@ Copyright (C) 2010 University of Oxford. All rights reserved.
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+    Refactored in Dec 2020 by Philip Biggin
+
 """
 import re
 LEFT = 'left'
 RIGHT = 'right'
 CENTER = 'center'
 
+
 def align(text, width=70, alignment=LEFT):
     ''' Align the "text" using the given alignment, padding to the given
-    width. 
+    width.
     '''
     if alignment == CENTER:
         text = text.strip()
         space = width - len(text)
-        return ' '*(space/2) + text + ' '*(space/2 + space%2)
+        return ' ' * (space / 2) + text + ' ' * (space / 2 + space % 2)
     elif alignment == RIGHT:
         text = text.rstrip()
         space = width - len(text)
-        return ' '*space + text
+        return ' ' * space + text
     else:
         text = text.lstrip()
         space = width - len(text)
-        return text + ' '*space
+        return text + ' ' * space
+
 
 class FormatColumns:
     '''Format some columns of text with constraints on the widths of the
@@ -50,12 +54,12 @@ class FormatColumns:
         self.contents = contents
         self.spacer = spacer
         self.retain_newlines = retain_newlines
-        self.positions = [0]*self.num_columns
+        self.positions = [0] * self.num_columns
 
     def format_line(self, wsre=re.compile(r'\s+')):
         ''' Fill up a single row with data from the contents.
         '''
-        l = []
+        temp_line = []
         data = False
         for i, (width, alignment) in enumerate(self.columns):
             content = self.contents[i]
@@ -81,11 +85,11 @@ class FormatColumns:
             if col:
                 data = True
             col = align(col, width, alignment)
-            l.append(col)
+            temp_line.append(col)
 
         if data:
-            return self.spacer.join(l).rstrip()
- 
+            return self.spacer.join(temp_line).rstrip()
+
         return ''
 
     def format(self, splitre=re.compile(r'(\n|\r\n|\r|[ \t]|\S+)')):
@@ -93,15 +97,16 @@ class FormatColumns:
             self.contents[i] = splitre.findall(content)
 
         # now process line by line
-        l = []
+        temp_line = []
         line = self.format_line()
         while line:
-            l.append(line)
+            temp_line.append(line)
             line = self.format_line()
-        return '\n'.join(l)
+        return '\n'.join(temp_line)
 
     def __str__(self):
         return self.format()
+
 
 def wrap(text, width=75, alignment=LEFT):
     return FormatColumns(((width, alignment),), [text])

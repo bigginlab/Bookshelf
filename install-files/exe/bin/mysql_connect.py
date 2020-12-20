@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 """
 Copyright (C) 2010 University of Oxford. All rights reserved.
 
@@ -15,19 +15,22 @@ Copyright (C) 2010 University of Oxford. All rights reserved.
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+    This (refactored) version updated by Philip Biggin 2020.
+
 """
-import MySQLdb
-import os,sys
+
+
+import pymysql
+import sys
+
 
 def _mysql_connect_():
-	try:
-		conn=MySQLdb.connect(host="",
-		        		user="",
-						passwd="",
-		    			db="")
-	except MySQLdb.Error, e:
-		sys.stderr.write ("\nCannot connect to Bookshelf database. Error %d: %s." % (e.args[0], e.args[1]))
-		sys.exit (1)
-	return conn
-
-
+    try:
+        conn = pymysql.connect(host="",
+                               user="",
+                               passwd="",
+                               db="")
+    except pymysql.Error as e:
+        sys.stderr.write("\nCannot connect to Bookshelf database. Error %d: %s." % (e.args[0], e.args[1]))
+        sys.exit(1)
+    return conn
