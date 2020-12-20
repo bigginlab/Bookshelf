@@ -234,10 +234,13 @@ if [ $(id -u) -eq 0 ]; then
 	CREATE USER '$bswriter'@'127.0.0.1' IDENTIFIED BY '$pass';
 	GRANT ALL PRIVILEGES  ON bookshelf.* TO '$bswriter'@'127.0.0.1'
  	WITH GRANT OPTION;
+	ALTER USER 'BS.writer'@'127.0.0.1' IDENTIFIED WITH mysql_native_password BY '$pass';
+
 	CREATE USER '$bsreader'@'127.0.0.1';
 	GRANT SELECT  ON bookshelf.* TO '$bsreader'@'127.0.0.1';
 	FLUSH PRIVILEGES;
-	
+	ALTER USER 'BS.reader'@'127.0.0.1' IDENTIFIED WITH mysql_native_password BY '';	
+
 	DROP DATABASE IF EXISTS bslog;
 	CREATE DATABASE bslog;
 	USE bslog;
@@ -273,7 +276,8 @@ if [ $(id -u) -eq 0 ]; then
 	CREATE USER '$bslogin'@'127.0.0.1' IDENTIFIED BY '$loginpass';
 	GRANT ALL PRIVILEGES  ON login.* TO '$bslogin'@'127.0.0.1'
  	WITH GRANT OPTION;
-	FLUSH PRIVILEGES;"
+	FLUSH PRIVILEGES;
+        ALTER USER 'BS.login'@'127.0.0.1' IDENTIFIED WITH mysql_native_password BY '$loginpass';"
 	
 	mysql -u root -p$mysqlpass  -e "$CMD"
 	
