@@ -1,4 +1,4 @@
-[![Documentation Status](https://readthedocs.org/projects/bookshelf/badge/?version=latest)](https://bookshelf.readthedocs.io/en/latest/?badge=latest)
+![flake8](https://github.com/bigginlab/Bookshelf/workflows/flake8/badge.svg?branch=master) [![Documentation Status](https://readthedocs.org/projects/bookshelf/badge/?version=latest)](https://bookshelf.readthedocs.io/en/latest/?badge=latest)
 
 
 # Bookshelf
