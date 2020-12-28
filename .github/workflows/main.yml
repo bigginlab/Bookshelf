@@ -1,6 +1,6 @@
 # This github action workflow for bookshelf to do some basic CI
 
-name: Bookshelf
+name: flake8
 
 on:
   push:
