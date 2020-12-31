@@ -1,4 +1,4 @@
-name: PHP Linting 
+name: phplint 
 on:
   push:
     branches: [ $default-branch ]
